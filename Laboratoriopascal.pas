@@ -11,7 +11,7 @@ program tema4.pas;
   var 
     contB,contL,contP, centena, decena, unidad, cantnro, i, j:integer;
     tecnologia: char;
-    codigodeseado, codigo, resgnombre, resgestado: string;
+    codigodeseado, codigo, resgnombre, resgestado, codigostr: string;
     archsalida: file of xcom;
     sec, secsalida:file of char;
     v:char;
@@ -53,9 +53,9 @@ program tema4.pas;
       cantnro:=0;
       i:=0;
       j:=0;
-      assign(archsalida,'C:\\Users\\fmati\\Desktop\\LaboratorioPascal\\archivo de salida.dat');
-        assign(sec,'C:\\Users\\fmati\\Desktop\\LaboratorioPascal\\secuencia de entrada.txt');
-        assign(secsalida,'C:\\Users\\fmati\\Desktop\\LaboratorioPascal\\secuencia de salida.txt');
+      assign(archsalida,'C:\\Users\\fmati\\Desktop\\gitPascal\\archivo de salida.dat');
+        assign(sec,'C:\\Users\\fmati\\Desktop\\gitPascal\\secuencia de entrada.txt');
+        assign(secsalida,'C:\\Users\\fmati\\Desktop\\gitPascal\\secuencia de salida.txt');
  //antes era .txt
       {$I-}
       reset(sec);
@@ -114,10 +114,11 @@ while not EOF(sec) do
         if not EOF(sec) then
         begin
           codigo:= codigo + v;
+          
           read(sec,v);
         end;
       end;
-
+    Str(codigo, codigostr);
     if not EOF(sec) then
     begin
       tecnologia:=v;
@@ -147,7 +148,7 @@ while not EOF(sec) do
     begin
       read(sec,v);
     end;
-reg.estado:= '';
+    reg.estado:= '';
     For i :=1 to 100 do
     begin
       if not EOF(sec) then
@@ -157,15 +158,20 @@ reg.estado:= '';
       end;
     end;
 
-    if tecnologia = 'L' then
+    if tecnologia = 'B' then
     begin
       write(reg.nombre_clave);
-      write()
+      write('   |     ');
       writeln(reg.cantidad);
+    end;
+    if tecnologia = 'L' and codigostr = codigodeseado then
+    begin
+      write(archsalida, reg);
     end;
 
   end;
 
+  write('');
 
   write('La cantidad de materiales en B es de: ');
   writeln(contB);
