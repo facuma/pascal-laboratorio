@@ -1,0 +1,50 @@
+asdfgBNombreClave#
+
+Accion TEMA4 es
+    Ambiente
+        xcom: registro
+            nombre: AN(30)
+            cantidad: N(3)
+            estado: AN(100)
+        finregistro
+
+        contB, contP, contL: entero
+
+        arch: archivo de xcom
+        reg: registro de xcom
+
+        Procedimiento transformar es 
+            centena := convertir(v)*100
+            avz(sec, v)
+            decena := convertir(v)*10
+            avz(sec, v)
+            cantnro := centena + decena + v
+        FIn Procedimiento
+
+    Proceso
+        ARR(sec) AVZ(sec) ABRRI /S(xcom)
+        contB, contL, contP = 0
+        Mientras no FDS(sec) hacer
+            Para i = 1 hasta 5 hacer
+                AVZ(sec, v)
+            FinPara
+            AVZ(sec)
+            Si v = "B" entonces
+                Escribir('material de Tecnologia B:', variabledesconocida)
+                contB := contB + 1
+            sino
+                si v = "L" entonces
+                    contL:= contL + 1
+                sino 
+                    si v = "p" entonces
+                        contP:= contP + 1
+                    finsi
+                finsi
+            finsi
+            Avz
+
+            Mientras V <> # hacer // Max 30 caract
+            Avz()
+            finmientras
+            Avz()
+            transformar
