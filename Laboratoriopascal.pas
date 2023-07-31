@@ -9,9 +9,11 @@ program tema4.pas;
     end;
   
   var 
-    contB,contL,contP, centena, decena, unidad, cantnro, i, j:integer;
+    contB,contL,contP,cont, centena, decena, unidad, cantnro, i, j:integer;
     tecnologia: char;
-    codigodeseado, codigo, resgnombre, resgestado, codigostr: string;
+    codigo, resgnombre, resgestado, digitocod: string;
+    codigodeseado: string[5];
+    codigostr: string[5];
     archsalida: file of xcom;
     sec, secsalida:file of char;
     v:char;
@@ -41,7 +43,9 @@ program tema4.pas;
 
   procedure INICIALIZACION;
     begin
-    
+      cont := 0;
+      digitocod:='';
+      codigostr:= '';
       codigo := '';
       resgnombre := '';
       contB:=0; 
@@ -96,12 +100,17 @@ program tema4.pas;
 begin
   INICIALIZACION;
 write('Ingrese el codigo a analizar: ');
-read(codigodeseado);
+readln(codigodeseado);
 delay(1000);
+
+writeln('_______________________________________________________________');
 writeln('Los materiales con la tecnologia B son: ');
-write('            Material            |');
-write('    Cantidad     |');
 writeln('');
+writeln('     ______________________________________________________     ');
+write('     |      Material            |');
+write('    Cantidad             |');
+writeln('');
+writeln('     |____________________________________________________|     ');
 
 
 if not EOF(sec) then
@@ -110,15 +119,15 @@ while not EOF(sec) do
   begin
   codigo:= '';
     For i :=1 to 5 do
+    begin
+      if not EOF(sec) then
       begin
-        if not EOF(sec) then
-        begin
-          codigo:= codigo + v;
-          
-          read(sec,v);
-        end;
+        digitocod:= v;
+        codigo := codigo + digitocod;
+        read(sec,v);
       end;
-    Str(codigo, codigostr);
+    end;
+    codigostr := codigo;
     if not EOF(sec) then
     begin
       tecnologia:=v;
@@ -134,7 +143,6 @@ while not EOF(sec) do
         if not EOF(sec) then
           read(sec,v);
       end;
-    writeln(' ');
     if not EOF(sec) then
     begin
       ESCRIBIRSECSALIDA;
@@ -143,7 +151,6 @@ while not EOF(sec) do
     TRANSFORMAR;
     ACUMULARCANTIDAD;
     reg.cantidad := cantnro;
-    writeln('');
     if not EOF(sec) then
     begin
       read(sec,v);
@@ -160,25 +167,39 @@ while not EOF(sec) do
 
     if tecnologia = 'B' then
     begin
+      write('     |');
       write(reg.nombre_clave);
-      write('   |     ');
-      writeln(reg.cantidad);
+      write('               |         ');
+      write(reg.cantidad);
+      writeln('             |');
     end;
-    if tecnologia = 'L' and codigostr = codigodeseado then
+    
+    if tecnologia = 'L' then
     begin
-      write(archsalida, reg);
+      if codigostr = codigodeseado then
+      begin
+        cont := cont+1;
+        write(archsalida, reg);
+      end;
     end;
 
   end;
 
-  write('');
-
+  writeln('_______________________________________________________________');
+  writeln('');
   write('La cantidad de materiales en B es de: ');
   writeln(contB);
   write('La cantidad de materiales en L es de: ');
   writeln(contL);
   write('La cantidad de materiales en P es de: ');
   writeln(contP);
+
+  writeln('_______________________________________________________________');
+  writeln('');
+
+  write('Se han guardado: ');
+  write(cont);
+  writeln(' registros en el archivo de salida.');
 
   close(sec);
   close(secsalida);
